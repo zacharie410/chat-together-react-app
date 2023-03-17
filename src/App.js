@@ -60,7 +60,7 @@ function App() {
     const storedUsername = localStorage.getItem('username');
     if (storedToken && storedUsername) {
       return axios
-        .get(`${SERVER_ADDRESS}/check-token`, {
+        .get(`${SERVER_ADDRESS}/auth`, {
           headers: { Authorization: `Bearer ${storedToken}` },
         })
         .then((response) => {
@@ -81,7 +81,7 @@ function App() {
   };
 
   useEffect(() => {
-    //checkExistingToken();
+    checkExistingToken();//this will make you automatically log back into your session
   }, []);
 
 
