@@ -7,27 +7,25 @@ const SERVER_ADDRESS = 'http://localhost:8080';
 
 function RoomsPage(props) {
     const [rooms, setRooms] = useState([]);
-
+    const [isConnecting, setIsConnecting] = useState(false);
 
   const socketRef = useRef();
 
 
   useEffect(() => {
-
-    const token = localStorage.getItem('token');
-    socketRef.current = io(`${SERVER_ADDRESS}`, {
-      transports: ['websocket'],
-      query: { token: token }
-    });
-
-    socketRef.current.emit('joinRoom', 'rooms');
-
-
-    socketRef.current.on('roomList', (rooms) => {
-      console.log('Received roomList:', rooms);
-      setRooms(rooms);
-    });
-
+      const token = localStorage.getItem('token');
+      socketRef.current = io(`${SERVER_ADDRESS}`, {
+        transports: ['websocket'],
+        query: { token: token }
+      });
+  
+      socketRef.current.emit('joinRoom', 'rooms');
+  
+  
+      socketRef.current.on('roomList', (rooms) => {
+        console.log('Received roomList:', rooms);
+        setRooms(rooms);
+      });
     return () => {
       socketRef.current.disconnect();
     };
@@ -35,12 +33,7 @@ function RoomsPage(props) {
 
   const navigate = useNavigate();
 
-  const handleRoomSelection = (roomId) => {
-  
-    socketRef.current.emit('joinRoom', roomId);
-  
-
-  
+  const handleRoomSelection = (roomId) => {  
     navigate(`/game/${roomId}`);
   };
   

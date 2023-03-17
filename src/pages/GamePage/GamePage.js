@@ -36,6 +36,18 @@ function GamePage({ socketRef }) {
       <p>Welcome to Room {roomId}!</p>
         <div>
           <h2>Room: {roomId}</h2>
+          <button onClick={handleLeaveRoom}>Leave Room</button>
+
+          <div className="chat-div">
+            <input
+              type="text"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+            />
+            </div>
+            <button className="chat-send" onClick={handleSendMessage}>Send</button>
+
+          </div>
           <ul>
             {messages.map((m, index) => (
               <li key={index}>
@@ -43,14 +55,6 @@ function GamePage({ socketRef }) {
               </li>
             ))}
           </ul>
-          <input
-            type="text"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
-          <button onClick={handleSendMessage}>Send</button>
-          <button onClick={handleLeaveRoom}>Leave Room</button>
-        </div>
     </div>
   );
 }

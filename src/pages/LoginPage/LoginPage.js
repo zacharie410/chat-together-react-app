@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './LoginPage.scss'
 
 function LoginPage({ handleAnonymousLogin, setUsername }) {
   const [token, setToken] = useState(null);
@@ -9,18 +10,21 @@ function LoginPage({ handleAnonymousLogin, setUsername }) {
   }, []);
 
   return (
-    <div>
-      <h2>Login Page</h2>
-      {!token && (
-        <input
-          type="text"
-          placeholder="Enter username (optional)"
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      )}
-      <button onClick={handleAnonymousLogin}>
-        {token ? `Login as ${localStorage.getItem('username')}` : 'Anonymous Login'}
-      </button>
+    <div className="login-page">
+      <h2>PLAY-TOGETHER</h2>
+      <div className="login-page-form">
+        {!token && (
+          <input
+            type="text"
+            placeholder="Enter nickname"
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        )}
+        <button onClick={handleAnonymousLogin}>
+          {token ? `PLAY AS ${localStorage.getItem('username')}` : 'PLAY'}
+        </button>
+      </div>
+
     </div>
   );
 }

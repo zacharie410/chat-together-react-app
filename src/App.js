@@ -12,6 +12,8 @@ function App() {
   const [connectionStatus, setConnectionStatus] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [socketConnected, setSocketConnected] = useState(false);
+  const [isConnecting, setIsConnecting] = useState(false);
+
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [username, setUsername] = useState('');
   const [messages, setMessages] = useState([]);
@@ -22,10 +24,15 @@ function App() {
   const handleAnonymousLogin = () => {
     if (isLoggingIn) return;
     if (checkExistingToken()) return;
+    
+
+    const chosenUsername = username.trim();
+
+    if (!chosenUsername) {
+      console.log('No username provided');
+      return
+    }
     setIsLoggingIn(true);
-
-    const chosenUsername = username.trim() || 'anonymous';
-
     axios.post(`${SERVER_ADDRESS}/login`, {
       username: chosenUsername,
       password: ''
@@ -60,7 +67,7 @@ function App() {
     const storedUsername = localStorage.getItem('username');
     if (storedToken && storedUsername) {
       return axios
-        .get(`${SERVER_ADDRESS}/auth`, {
+        .get(`${SERVER_ADDRESS}/check-token`, {
           headers: { Authorization: `Bearer ${storedToken}` },
         })
         .then((response) => {
@@ -71,7 +78,6 @@ function App() {
           } else {
             localStorage.removeItem('token');
             localStorage.removeItem('username');
-
           }
         })
         .catch((error) => {
@@ -81,11 +87,17 @@ function App() {
   };
 
   useEffect(() => {
+    setUsername('')
     checkExistingToken();//this will make you automatically log back into your session
   }, []);
 
 
   useEffect(() => {
+    if (isConnecting === true) {
+      console.log('socket is already connected');
+      return
+    }
+    
     const token = localStorage.getItem('token');
     if (token && !socketConnected) {
       socketRef.current = io(`${SERVER_ADDRESS}`, {
@@ -93,9 +105,12 @@ function App() {
         query: { token: token }
       });
       socketRef.current.on('connect', () => {
-        console.log('Connected to server');
+        setIsConnecting(true)
+        console.log('Connecting to server');
         setConnectionStatus('Connected to server');
         setSocketConnected(true);
+        setIsConnecting(false)
+
       });
       socketRef.current.on('disconnect', () => {
         console.log('Disconnected from server');

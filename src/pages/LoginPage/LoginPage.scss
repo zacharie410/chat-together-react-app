@@ -1,0 +1,26 @@
+
+
+.login-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    border-radius: 1rem;
+    .login-page-form {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        margin-left:auto;
+        margin-right:auto;
+        margin-top: 1rem;
+        input {
+            border-radius: 1rem;
+            padding: 1rem;
+        }
+        button {
+            margin-top: 2rem;
+            border-radius: 1rem;
+            padding: 1rem;
+        }
+    }
+}
