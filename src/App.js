@@ -23,12 +23,13 @@ function App() {
   
   const handleAnonymousLogin = () => {
     if (isLoggingIn) return;
+    handleLogout();
+    
     if (checkExistingToken()) return;
     
 
     const chosenUsername = username.trim();
-
-    if (!chosenUsername) {
+    if (!chosenUsername ) {
       console.log('No username provided');
       return
     }
@@ -84,6 +85,11 @@ function App() {
           console.error(error);
         });
     }
+    else
+      {
+        localStorage.removeItem('token');
+        localStorage.removeItem('username');
+      }
   };
 
   useEffect(() => {

@@ -1,0 +1,40 @@
+
+.rooms-page {
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    border-radius: 1rem;
+    button {
+        font-size: 2rem;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+
+        border-radius: 1rem;
+        padding: 1rem;
+    }
+    .rooms-div {
+        display: flex;
+        flex-direction: column;
+        width: 90%;
+        margin-left:auto;
+        margin-right:auto;
+        margin-top: 1rem;
+    }
+    ul {
+        padding: 0px;
+        margin: 0px;
+        list-style: none;
+        li {
+            font-size: 2.5rem;
+        }
+        button {
+            margin: 1rem;
+        }
+    }
+    button:hover {
+        background-color: blueviolet;
+    }
+}

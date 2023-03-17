@@ -11,7 +11,7 @@ function LoginPage({ handleAnonymousLogin, setUsername }) {
 
   return (
     <div className="login-page">
-      <h2>PLAY-TOGETHER</h2>
+      <h1>CHAT-TOGETHER</h1>
       <div className="login-page-form">
         {!token && (
           <input
@@ -21,7 +21,7 @@ function LoginPage({ handleAnonymousLogin, setUsername }) {
           />
         )}
         <button onClick={handleAnonymousLogin}>
-          {token ? `PLAY AS ${localStorage.getItem('username')}` : 'PLAY'}
+          {token ? `CHAT AS ${localStorage.getItem('username')}` : 'CHAT'}
         </button>
       </div>
 

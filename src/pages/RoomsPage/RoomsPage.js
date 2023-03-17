@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './RoomsPage.scss'
 
 const SERVER_ADDRESS = 'http://localhost:8080';
 
@@ -20,7 +21,6 @@ function RoomsPage(props) {
       });
   
       socketRef.current.emit('joinRoom', 'rooms');
-  
   
       socketRef.current.on('roomList', (rooms) => {
         console.log('Received roomList:', rooms);
@@ -55,21 +55,22 @@ const handleCreateRoom = () => {
 
 
   return (
-    <div>
+    <div className="rooms-page">
       <h1>Rooms Page</h1>
-      <button onClick={handleCreateRoom}>Create Room</button>
-      <ul>
-      {rooms.filter((room) => room !== "rooms")
-        .map((room) => (
-            <li key={room}>
-            {room}
-            <button onClick={() => handleRoomSelection(room)}>Join</button>
-            </li>
-        ))}
+      <div className="rooms-div">
+        <button onClick={handleCreateRoom}>Create Room</button>
+        <ul>
+          {rooms.filter((room) => room !== "rooms")
+            .map((room) => (
+                <li key={room}>
+                {room}
+                <button onClick={() => handleRoomSelection(room)}>Join</button>
+                </li>
+            ))}
+        </ul>
+          <button onClick={props.onLogout}>Logout</button>
+      </div>
 
-
-      </ul>
-        <button onClick={props.onLogout}>Logout</button>
     </div>
   );
 }

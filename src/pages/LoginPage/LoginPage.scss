@@ -1,4 +1,12 @@
 
+body {
+    background-color: paleturquoise;
+
+    h1 {
+        color: white !important;
+        text-shadow: 0 0 10px black;
+    }
+}
 
 .login-page {
     display: flex;
@@ -6,6 +14,7 @@
     justify-content: center;
     text-align: center;
     border-radius: 1rem;
+    
     .login-page-form {
         display: flex;
         flex-direction: column;
@@ -18,9 +27,14 @@
             padding: 1rem;
         }
         button {
+            font-size: 2rem;
             margin-top: 2rem;
             border-radius: 1rem;
             padding: 1rem;
+        }
+        //add drop shadow
+        button:hover {
+            background-color: blueviolet;
         }
     }
 }

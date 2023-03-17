@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
+import './GamePage.scss'
 
 function GamePage({ socketRef }) {
   const { roomId } = useParams();
@@ -7,15 +8,18 @@ function GamePage({ socketRef }) {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
+    if (!socketRef.current) {
+      return;
+     } else {
+      socketRef.current.off('newMessage')
+    }
+
     socketRef.current.emit('joinRoom', roomId); // Join the room with roomId
     socketRef.current.on('newMessage', (message) => {
       setMessages((messages) => [...messages, message]);
     });
 
-    return () => {
-      socketRef.current.off('newMessage');
-    };
-  }, [socketRef, roomId]); // Include roomId as a dependency
+  }, []); // Include roomId as a dependency
 
   const handleSendMessage = () => {
     if (message.trim() !== '') {
@@ -29,29 +33,29 @@ function GamePage({ socketRef }) {
     window.location.href = '/';
     socketRef.current.emit('leaveRoom', roomId);
   }
-
+          /*<div className="gameFrame">
+            <canvas ref={canvasRef} width="800" height="600"></canvas>
+          </div>*/
   return (
-    <div>
-      <h1>Game Page</h1>
-      <p>Welcome to Room {roomId}!</p>
-        <div>
-          <h2>Room: {roomId}</h2>
-          <button onClick={handleLeaveRoom}>Leave Room</button>
+    <div className='chat-page'>
+      <h1>Chat Page</h1>
+          <h2>{roomId}</h2>
+          <button className="chat-leave" onClick={handleLeaveRoom}>Leave Room</button>
 
           <div className="chat-div">
             <input
               type="text"
               value={message}
+              name="chat"
               onChange={(e) => setMessage(e.target.value)}
             />
             </div>
             <button className="chat-send" onClick={handleSendMessage}>Send</button>
-
-          </div>
-          <ul>
+        
+          <ul className="messages">
             {messages.map((m, index) => (
-              <li key={index}>
-                <strong>{m.username}:</strong> {m.text}
+              <li className="msg" key={index}>
+                <strong>{m.username}:</strong> {m.text.substring(0, 50)}
               </li>
             ))}
           </ul>
