@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import DemoGame from '../../games/DemoGame/DemoGame';
 
 function GamePage({ socketRef }) {
   const { roomId } = useParams();
@@ -37,6 +38,9 @@ function GamePage({ socketRef }) {
         <div>
           <h2>Room: {roomId}</h2>
           <button onClick={handleLeaveRoom}>Leave Room</button>
+
+          <DemoGame roomId={roomId} socketRef={socketRef}/>
+
 
           <div className="chat-div">
             <input
