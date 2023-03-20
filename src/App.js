@@ -23,13 +23,13 @@ function App() {
   
   const handleAnonymousLogin = () => {
     if (isLoggingIn) return;
-    handleLogout();
     
     if (checkExistingToken()) return;
     
 
     const chosenUsername = username.trim();
     if (!chosenUsername ) {
+      window.location.href = '/';
       console.log('No username provided');
       return
     }
