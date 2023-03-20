@@ -1,31 +1,25 @@
-import { useState, useEffect, useRef } from 'react';
-import io from 'socket.io-client';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import './RoomsPage.scss'
-
-const SERVER_ADDRESS = 'http://localhost:8080';
+import { useState, useEffect, useRef } from "react";
+import { createSocket } from "../../utils/sockets"; // Import createSocket from sockets.js
+import { createRoom } from "../../utils/api"; // Import createRoom from api.js
+import { useNavigate } from "react-router-dom";
+import "./RoomsPage.scss";
 
 function RoomsPage(props) {
-    const [rooms, setRooms] = useState([]);
-    const [isConnecting, setIsConnecting] = useState(false);
+  const [rooms, setRooms] = useState([]);
+  const [isConnecting, setIsConnecting] = useState(false);
 
   const socketRef = useRef();
 
-
   useEffect(() => {
-      const token = localStorage.getItem('token');
-      socketRef.current = io(`${SERVER_ADDRESS}`, {
-        transports: ['websocket'],
-        query: { token: token }
-      });
-  
-      socketRef.current.emit('joinRoom', 'rooms');
-  
-      socketRef.current.on('roomList', (rooms) => {
-        console.log('Received roomList:', rooms);
-        setRooms(rooms);
-      });
+    const token = localStorage.getItem("token");
+    socketRef.current = createSocket(token);
+
+    socketRef.current.emit("joinRoom", "rooms");
+
+    socketRef.current.on("roomList", (rooms) => {
+      console.log("Received roomList:", rooms);
+      setRooms(rooms);
+    });
     return () => {
       socketRef.current.disconnect();
     };
@@ -33,18 +27,14 @@ function RoomsPage(props) {
 
   const navigate = useNavigate();
 
-  const handleRoomSelection = (roomId) => {  
+  const handleRoomSelection = (roomId) => {
     navigate(`/game/${roomId}`);
   };
-  
 
-
-const handleCreateRoom = () => {
-    // Replace this with your desired roomId generation logic
+  const handleCreateRoom = () => {
     const roomId = `room${Math.floor(Math.random() * 10000)}`;
-  
-    axios
-      .post(`${SERVER_ADDRESS}/rooms`, { roomId })
+
+    createRoom(roomId)
       .then(() => {
         handleRoomSelection(roomId);
       })
@@ -52,7 +42,6 @@ const handleCreateRoom = () => {
         console.error(error);
       });
   };
-
 
   return (
     <div className="rooms-page">

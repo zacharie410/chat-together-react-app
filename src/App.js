@@ -36,7 +36,7 @@ function App() {
     setIsLoggingIn(true);
     axios.post(`${SERVER_ADDRESS}/login`, {
       username: chosenUsername,
-      password: ''
+      password: '',
     })
       .then(response => {
         const token = response.data.token;
@@ -82,6 +82,8 @@ function App() {
           }
         })
         .catch((error) => {
+          localStorage.removeItem('token');
+          localStorage.removeItem('username');
           console.error(error);
         });
     }
